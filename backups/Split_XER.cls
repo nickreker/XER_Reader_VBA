@@ -23,14 +23,10 @@ Private Const PROJECT_LIST_TABLE_TITLE_RANGE As String = "K6"
 Private Const XER_ADDED_WSs_HEADERS_ROW As Byte = 2
 Private Const XER_ADDED_WSs_START_DATA_ROW As Byte = 3
 
-
-
 Public Sub Get_y_Read_XER()
 
 Dim xer_file_path As String
     xer_file_path = Pick_Xer_File
-    
-
     
     Call Add_XER_File_To_Dashboard(file_path:=xer_file_path)
         
@@ -107,9 +103,7 @@ Dim rg As Range
     Const proj_id As String = "proj_id"
     Dim col_with_proj_id As Long
     col_with_proj_id = rg.Find(proj_id).Column
-    
-    'last_recalc_date <--- Need to do a lookup or something
-    
+        
     Set rg = rg.Offset(1).Resize(rg.Rows.Count - 2)
        
     Dim arr_temp As Variant

@@ -10,10 +10,6 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public raw_data As Variant
-
-'Private m_arr_exc As Collection
-'Private m_arr_exc_hrs As Collection
-'Private m_arr_exc_inherits As Collection
 Private m_nWD As Object
 
 Private Const LEGEND_nWD_DEST As String = "B42"
@@ -22,10 +18,6 @@ Private Const LEGEND_nWD_COLOUR As Long = 11184295 'Flatiron Light Gray
 Private Const WH_GRID_COLOUR As Long = 7482624 'Flatiron Dark Blue
 
 Private Sub Class_Initialize()
-'    Set m_arr_exc = New Collection
-'    Set m_arr_exc_hrs = newCollection
-'    Set m_arr_exc_inherits = New Collection
-'    Set m_nWD = New Collection
 
     Set m_nWD = CreateObject("Scripting.Dictionary")
     
@@ -106,7 +98,6 @@ Private Sub Get_y_Show_Global_Inherits()
     Dim i As Long
     For i = LBound(arr, 2) To UBound(arr, 2)
         If dict.Exists(CLng(arr(1, i))) Then
-'            m_arr_exc_inherits.Add CLng(arr(1, i))
             Set rg = ws.Range(dict(CLng(arr(1, i)))).Offset(, 1)
             With rg
                 .Value2 = Chr(252)
@@ -129,8 +120,6 @@ Public Sub Add_Comment_for_Global_Inheritee()
     Dim rg As Range
     Set rg = ws.Range(CAL_GEN_INFO_DEST).CurrentRegion
     Set rg = rg.Offset(1).Resize(rg.Rows.Count - 1)
-    
-    
     
     Dim cel As Variant
     For Each cel In rg.Columns(2).Cells
@@ -167,16 +156,6 @@ Private Function Get_Dict_Exceptions_All() As Object
     Set Get_Dict_Exceptions_All = dict
     
 End Function
-
-'Private Sub Parse_Exceptions(e_array As Variant)
-''
-''    Dim arr As Variant
-''    arr = Get_Exceptions_Array(e_array)
-''
-''    Call Write_Exceptions_To_Cal_Report(arr)
-'
-'
-'End Sub
 
 Private Sub Write_Exceptions_To_Cal_Report(arr As Variant)
     
@@ -238,6 +217,7 @@ Private Sub Write_Exceptions_To_Cal_Report(arr As Variant)
                 End If
                 
                 If i = UBound(arr, 1) Then GoTo Skip_Exception_Day
+                
 Next_i_Line:
             Next i
             
@@ -343,8 +323,6 @@ Continue:
 
 End Function
 
-'---------------------------------------------------------------------------------------
-
 Private Sub Parse_Standard_Work_Week(m_Raw_Data As Variant)
 
     ReDim Standard_Week(1 To 7, 1 To 5)
@@ -437,7 +415,6 @@ Private Sub Parse_Standard_Work_Week(m_Raw_Data As Variant)
 
 Continue:
     Next i
-
 
     Call Format_Standard_Workweek(Standard_Week)
     Call Add_Legend_Workday_Stuff(Standard_Week)

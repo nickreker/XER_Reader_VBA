@@ -39,9 +39,9 @@ Public Sub click_Reset_Workbook()
 End Sub
 
 Public Sub click_New_Cal_Report()
-'    Call Turn_Off_Functionality
-'        Call Make_Cal_Rept_Worksheet
-'    Call Turn_On_Functionality
+    Call Turn_Off_Functionality
+        Call Make_Cal_Rept_Worksheet
+    Call Turn_On_Functionality
 End Sub
 
 Public Sub click_increment_Cal_Year()
@@ -113,54 +113,6 @@ Private Sub Add_Breadcrumbs_to_Dashboard_on_all_Tabs()
     
 End Sub
 
-'Sub iopuhpiojbnpjobn()
-'
-'    Const CALENDAR_WHOLE_AREA As String = "B3:Z39"
-'    Const MONTHIES As String = "$C$6:$I$11,$K$6:$Q$11,$S$6:$Y$11,$C$15:$I$20,$K$15:$Q$20,$S$15:$Y$20,$S$24:$Y$29,$K$24:$Q$29,$C$24:$I$29,$C$33:$I$38,$K$33:$Q$38,$S$33:$Y$38"
-'    Const CAL_WEEKDAYS_FIRST_ROW As Byte = 5
-'    Const CAL_WEEKDAYS_FIRST_COL As String = "C"
-'
-'    Dim ws As Worksheet
-'    Set ws = ThisWorkbook.Worksheets(CAL_WS_NAME)
-'
-'    Dim rg As Range
-'    Set rg = ws.Range(CALENDAR_WHOLE_AREA)
-'
-'    rg.Interior.Pattern = xlNone
-'
-'    Set rg = ws.Range(MONTHIES)
-'
-'    Const nwd1 As String = """Fr"""
-'
-'    Dim formula_string As String
-'    formula_string = "=" & CAL_WEEKDAYS_FIRST_COL & "$" & "5" & "=" & nwd1
-'
-'    With rg
-'        .FormatConditions.Add Type:=xlExpression, Formula1:=formula_string
-'        .FormatConditions(rg.FormatConditions.Count).SetFirstPriority
-'        .FormatConditions(1).Interior.Color = 11184295
-'        .FormatConditions(1).StopIfTrue = False
-'    End With
-'
-'End Sub
-
-
-'Sub gho8iugipug()
-'
-'    Call Unprotect_Calendar_Report_ws
-'
-'    Dim ws As Worksheet
-'    Set ws = ThisWorkbook.Worksheets(CAL_WS_NAME)
-'
-'    Dim rg As Range
-'    Set rg = ws.Range(CAL_GEN_INFO_DEST).CurrentRegion
-'    Set rg = rg.Offset(1).Resize(rg.Rows.Count - 1)
-'
-'    Call Protect_Calendar_Report_ws
-'
-'End Sub
-
-
 '------------------------------------------------------------------------Delete/Reset Stuff
 
 Private Sub Delete_All_Worksheets_but_Dash()
@@ -172,8 +124,6 @@ Private Sub Delete_All_Worksheets_but_Dash()
     Next ws
 
 End Sub
-
-
 
 Private Sub Delete_Dashboard_Tables_And_Stuff()
     
@@ -188,8 +138,7 @@ Private Sub Delete_Dashboard_Tables_And_Stuff()
     
 End Sub
 
-
-'---------------------------------------------------------------------------------------------
+'------------------------------------------------------------------------Misc
 
 Private Sub Calendar_Picker_Form()
     
@@ -226,13 +175,6 @@ Private Sub Calendar_Picker_Form()
 
 End Sub
 
-
-
-
-
-'----------------------------------------------------------------------------------------
-
-
 Public Sub Protect_Calendar_Report_ws()
 
     Dim ws As Worksheet
@@ -254,7 +196,8 @@ Public Sub Unprotect_Calendar_Report_ws()
     ws.Unprotect
     
 End Sub
-'-----------------------------------------------------------------------------------------------------------------------------------------
+
+'------------------------------------------------------------------------Make Word Report
 
 Private Sub ClearClipboard()
    OpenClipboard (0&)
@@ -301,8 +244,6 @@ Private Sub Make_New_Word_Report()
 
     With wdApp
         
-        
-        
         .documents.Add
         
         With .Selection
@@ -326,7 +267,6 @@ Private Sub Make_New_Word_Report()
             .Selection.Collapse Direction:=0 'wdCollapseEnd
             If y <> year_last Then .Selection.InsertBreak Type:=7 'wdPageBreak
 
-            
         Next y
         
         .Selection.Goto What:=1, Which:=1
@@ -341,7 +281,6 @@ Private Sub Make_New_Word_Report()
     ws.Activate
     ws.Range("A1").Select
     
-'    wdApp.Activate
     wdApp.Visible = True
     
 Done:
@@ -354,17 +293,6 @@ Private Sub Delete_Crement_Buttons_to_Calendar_Report(ws As Worksheet)
     ws.Shapes("btn_Pick_Calendar").Delete
     ws.Shapes("btn_Print_Calendar").Delete
 End Sub
-'Sub HIOUHIUPHUI()
-'    Dim ws As Worksheet
-'    Set ws = ThisWorkbook.Worksheets(CAL_WS_NAME)
-'    Call Delete_Crement_Buttons_to_Calendar_Report(ws)
-'End Sub
-'
-'Sub iughikoughb()
-'    Dim ws As Worksheet
-'    Set ws = ThisWorkbook.Worksheets(CAL_WS_NAME)
-'    Call Add_Crement_Buttons_to_Calendar_Report(ws)
-'End Sub
 
 Private Sub Add_Crement_Buttons_to_Calendar_Report(ws As Worksheet)
 
@@ -425,11 +353,7 @@ Private Sub Add_Crement_Buttons_to_Calendar_Report(ws As Worksheet)
     
 End Sub
 
-
-
-
-'------------------------------------------------------------------------------------------------------------------------------------------
-
+'------------------------------------------------------------------------faster faster
 
 Private Sub Turn_Off_Functionality()
     Application.Calculation = xlCalculationManual

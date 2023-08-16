@@ -16,7 +16,6 @@ Private Const CALENDAR_WEEKS_PER_MONTH_COUNT As Byte = 6
 Private Const CALENDAR_MONTH_NUM_ROWS As Byte = 8
 Private Const CALENDAR_MONTH_NUM_COLS As Byte = 7
 
-
 Private Const CALENDAR_WEEKDAY_LABELS As String = "Su,Mo,Tu,We,Th,Fr,Sa"
 Private Const MONTHIES As String = "$C$6:$I$11,$K$6:$Q$11,$S$6:$Y$11,$C$15:$I$20,$K$15:$Q$20,$S$15:$Y$20,$S$24:$Y$29,$K$24:$Q$29,$C$24:$I$29,$C$33:$I$38,$K$33:$Q$38,$S$33:$Y$38"
 
@@ -321,7 +320,6 @@ Private Sub Make_February_to_December(ws As Worksheet)
         
         Set rg = rg.Offset(1).Resize(CALENDAR_WEEKS_PER_MONTH_COUNT, CALENDAR_MONTH_NUM_COLS)
         
-        
         Dim arr_Month_Formulas_non_Jan As Variant
         arr_Month_Formulas_non_Jan = Get_Month_Formulas_sans_Jan
         
@@ -565,15 +563,10 @@ Private Sub Write_Gen_Cal_Info()
     End With
     
     rg.Columns(1).EntireColumn.ColumnWidth = 13
-'    rg.Columns(1).HorizontalAlignment = xlCenter
     
     rg.Columns(2).EntireColumn.ColumnWidth = 8
-'    rg.Columns(2).HorizontalAlignment = xlCenter
-        
-'    rg.Columns(3).ColumnWidth = rg.Columns(3).ColumnWidth + 2
         
     rg.Columns(4).EntireColumn.ColumnWidth = 8
-'    rg.Columns(4).HorizontalAlignment = xlCenter
     
 End Sub
 
@@ -771,7 +764,6 @@ Private Sub Add_Hr_Exc_to_Legend(ws As Worksheet, o As Byte)
         Set rg = ws.Range(LEGEND_nWD_DEST).Offset(2)
     End If
     
-    
     With rg.Offset(, 1)
         .Value2 = "Work Hour Exception"
         .HorizontalAlignment = xlLeft
@@ -855,15 +847,12 @@ Private Function Get_Cal_Data_for_Date_Parsing(Optional idee As String) As Varia
     ElseIf idee <> "" Then
         GoTo IDEE_SET_ALREADY
     End If
-     
-     
+
     Dim gl As String
-    
      
 IDEE_SET_ALREADY:
 
     'find data for the id
-
     For i = (LBound(arr, 1) + 1) To UBound(arr, 1)
         If arr(i, clndr_id) = Val(idee) Then
             s = arr(i, clndr_data)
@@ -877,7 +866,6 @@ IDEE_NOT_SET:
     s = arr((LBound(arr, 1) + 1), clndr_data)
     
     'check if there's a default to switch to
-    
     For i = (LBound(arr, 1) + 1) To UBound(arr, 1)
         If arr(i, default_flag) = "Y" Then
             s = arr(i, clndr_data)
@@ -908,27 +896,7 @@ SET_FUNC_TO_FINAL:
             End If
         Next i
     End If
-    
-'        Dim gl As String
-'        gl = arr(i, base_clndr_id)
-'
-'        Dim gd As String
-'        gd = ""
-'        For i = (LBound(arr, 1) + 1) To UBound(arr, 1)
-'            If arr(i, clndr_id) = Val(gl) Then
-'                gd = arr(i, clndr_data)
-'                GoTo DO_STUFF
-'            End If
-'        Next i
-'    End If
-'
-'DO_STUFF:
-    
-    
-    
-    
-    
-'    out(3) = gl
+
 Done:
 
     Get_Cal_Data_for_Date_Parsing = out
@@ -950,10 +918,8 @@ Private Sub Add_Format_y_Refs_to_Cal_Rept_for_Cal_Selected(idee As Variant)
     Set rg = ws.Range(CAL_GEN_INFO_DEST).CurrentRegion
        
     With rg.Offset(1)
-'        .ClearComments
         .Interior.Pattern = xlNone
         .Borders(xlEdgeLeft).LineStyle = xlNone
-'        .Borders(xlEdgeTop).LineStyle = xlNone
         .Borders(xlEdgeBottom).LineStyle = xlNone
         .Borders(xlEdgeRight).LineStyle = xlNone
         .Borders(xlInsideVertical).LineStyle = xlNone
@@ -984,7 +950,6 @@ Private Sub Add_Format_y_Refs_to_Cal_Rept_for_Cal_Selected(idee As Variant)
     Next i
 Done:
 End Sub
-'--------------------------------------------------------------------------------------------
 
 Private Function Get_Col_Num(s As String) As Byte
     
@@ -1027,9 +992,6 @@ Private Function Get_Raw_Data() As Variant
     Get_Raw_Data = rg.Value2
     
 End Function
-
-
-
 
 Private Function Get_Calendar_Range() As Range
 
@@ -1203,7 +1165,6 @@ Private Sub Make_Std_Workweek_Grid()
     Dim num As Variant
     
     For Each num In nums
-    
     
     Set rg2 = rg_times.Columns(num)
         
