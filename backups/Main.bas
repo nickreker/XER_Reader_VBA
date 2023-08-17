@@ -1,7 +1,6 @@
 Attribute VB_Name = "Main"
 Option Explicit
 
-
 Declare PtrSafe Function OpenClipboard Lib "User32.dll" (ByVal hwnd As LongPtr) As LongPtr
 Declare PtrSafe Function EmptyClipboard Lib "User32.dll" () As Long
 Declare PtrSafe Function CloseClipboard Lib "User32.dll" () As Long
@@ -16,9 +15,11 @@ Public Const CALENDAR_STD_WORKWEEK_ADDRESS As String = "C46:X72"
 
 Public Sub click_Do_Nothing()
 End Sub
+
 Public Sub Print_Calendar_to_Word_Click()
     Call Make_New_Word_Report
 End Sub
+
 Public Sub click_Show_User_Form()
     Call Turn_Off_Functionality
         Calendar_Picker_Form
@@ -56,6 +57,7 @@ Public Sub click_decrement_Cal_Year()
 End Sub
 
 Private Sub Make_New_Parsed_Workbook()
+On Error GoTo error_handle
 
     Call Delete_All_Worksheets_but_Dash
     Call Delete_Dashboard_Tables_And_Stuff
@@ -72,9 +74,15 @@ Private Sub Make_New_Parsed_Workbook()
     
     shData.Protect
     
+Done:
+Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: Make_New_Parsed_Workbook"
 End Sub
 
 Private Sub Make_Cal_Rept_Worksheet()
+On Error GoTo error_handle
 
     Dim s As Calendar_ws
     Set s = New Calendar_ws
@@ -86,10 +94,16 @@ Private Sub Make_Cal_Rept_Worksheet()
     
     shData.Activate
     shData.Range("A1").Activate
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: Make_Cal_Rept_Worksheet"
 End Sub
 
 Private Sub Add_Breadcrumbs_to_Dashboard_on_all_Tabs()
+On Error GoTo error_handle
 
     Dim ws As Variant
     Dim rg As Range
@@ -110,12 +124,18 @@ Private Sub Add_Breadcrumbs_to_Dashboard_on_all_Tabs()
             
         End If
     Next ws
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: Add_Breadcrumbs_to_Dashboard_on_all_Tabs"
 End Sub
 
 '------------------------------------------------------------------------Delete/Reset Stuff
 
 Private Sub Delete_All_Worksheets_but_Dash()
+On Error GoTo error_handle
 
     Dim ws As Variant
 
@@ -123,10 +143,16 @@ Private Sub Delete_All_Worksheets_but_Dash()
         If ws.CodeName <> "shData" Then ws.Delete
     Next ws
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: Delete_All_Worksheets_but_Dash"
 End Sub
 
 Private Sub Delete_Dashboard_Tables_And_Stuff()
-    
+On Error GoTo error_handle
+
     shData.Unprotect
     
     Dim rg As Range
@@ -135,13 +161,19 @@ Private Sub Delete_Dashboard_Tables_And_Stuff()
     rg.EntireColumn.Delete
 
     shData.Protect
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: Delete_Dashboard_Tables_And_Stuff"
 End Sub
 
 '------------------------------------------------------------------------Misc
 
 Private Sub Calendar_Picker_Form()
-    
+On Error GoTo error_handle
+
     ' create the form so it initializes & fills with data
     Dim frm As Cal_Picker
     Set frm = New Cal_Picker
@@ -173,9 +205,15 @@ Private Sub Calendar_Picker_Form()
     ' kill kill kill
     Set frm = Nothing
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: Calendar_Picker_Form"
 End Sub
 
 Public Sub Protect_Calendar_Report_ws()
+On Error GoTo error_handle
 
     Dim ws As Worksheet
     Set ws = ThisWorkbook.Worksheets(CAL_WS_NAME)
@@ -186,26 +224,48 @@ Public Sub Protect_Calendar_Report_ws()
         :=True, AllowInsertingHyperlinks:=True, AllowDeletingColumns:=True, _
         AllowDeletingRows:=True, AllowSorting:=True, AllowFiltering:=True, _
         AllowUsingPivotTables:=True
+
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: Protect_Calendar_Report_ws"
 End Sub
 
 Public Sub Unprotect_Calendar_Report_ws()
+On Error GoTo error_handle
 
     Dim ws As Worksheet
     Set ws = ThisWorkbook.Worksheets(CAL_WS_NAME)
     
     ws.Unprotect
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: Unprotect_Calendar_Report_ws"
 End Sub
 
 '------------------------------------------------------------------------Make Word Report
 
 Private Sub ClearClipboard()
+On Error GoTo error_handle
+
    OpenClipboard (0&)
    EmptyClipboard
    CloseClipboard
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: ClearClipboard"
 End Sub
 
 Private Sub Make_New_Word_Report()
+On Error GoTo error_handle
 
     Unprotect_Calendar_Report_ws
     
@@ -282,19 +342,33 @@ Private Sub Make_New_Word_Report()
     ws.Range("A1").Select
     
     wdApp.Visible = True
-    
+
 Done:
     Protect_Calendar_Report_ws
+    Exit Sub
+
+error_handle:
+    Protect_Calendar_Report_ws
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: Make_New_Word_Report"
 End Sub
 
 Private Sub Delete_Crement_Buttons_to_Calendar_Report(ws As Worksheet)
+On Error GoTo error_handle
+
     ws.Shapes("btn_Last_Year").Delete
     ws.Shapes("btn_Next_Year").Delete
     ws.Shapes("btn_Pick_Calendar").Delete
     ws.Shapes("btn_Print_Calendar").Delete
+
+Done:
+   Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: Delete_Crement_Buttons_to_Calendar_Report"
 End Sub
 
 Private Sub Add_Crement_Buttons_to_Calendar_Report(ws As Worksheet)
+On Error GoTo error_handle
 
     Dim rg As Range
     Set rg = ws.Range("K3:L3")
@@ -350,7 +424,12 @@ Private Sub Add_Crement_Buttons_to_Calendar_Report(ws As Worksheet)
         .OnAction = "Print_Calendar_to_Word_Click"
         .DrawingObject.Font.Size = 10
     End With
-    
+
+Done:
+   Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Module: main" & Chr(10) & "Procedure: Add_Crement_Buttons_to_Calendar_Report"
 End Sub
 
 '------------------------------------------------------------------------faster faster

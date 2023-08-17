@@ -20,22 +20,17 @@ Private Const CALENDAR_WEEKDAY_LABELS As String = "Su,Mo,Tu,We,Th,Fr,Sa"
 Private Const MONTHIES As String = "$C$6:$I$11,$K$6:$Q$11,$S$6:$Y$11,$C$15:$I$20,$K$15:$Q$20,$S$15:$Y$20,$S$24:$Y$29,$K$24:$Q$29,$C$24:$I$29,$C$33:$I$38,$K$33:$Q$38,$S$33:$Y$38"
 
 Private Const LEGEND_nWD_DEST As String = "B42"
-
 Private Const LEGEND_Exc_DEST As String = "H42"
 Private Const LEGEND_Exc_COLOUR As Long = 11230464 'Flatiron Blue
-
 Private Const LEGEND_Exc_Inherit_COLOUR As Long = 2797635 'Flatiron Green
-
 Private Const LEGEND_Hr_Exc_COLOUR As Long = 2934783 'Flatiron Yellow
-
 Private Const LEGEND_Exc_Offset_1 As Byte = 8
 
 Private Const ROW_HEIGHT_CAL_YEAR As Byte = 35
 Private Const ROW_HEIGHT_CAL_ROWS As Byte = 15
 
-
 Public Sub Make_a_New_ws_for_a_Calendar_Report()
-On Error GoTo msg
+On Error GoTo error_handle
 
     If ThisWorkbook.Worksheets("CALENDAR").Name <> "CALENDAR" Then Exit Sub
     
@@ -50,9 +45,6 @@ On Error GoTo msg
         End If
     Next sht
     
-Continue_Cal_Rept_Creation:
-
-    On Error GoTo msg
     ThisWorkbook.Worksheets.Add After:=shData
 
     Dim ws_New_Report As Worksheet
@@ -76,17 +68,17 @@ Continue_Cal_Rept_Creation:
     Call Add_Formulas_and_Data_to_Calendar_Report(ws_New_Report)
     Call Add_Buttons_to_Calendar_Report(ws:=ws_New_Report)
     Call Write_Gen_Cal_Info
-    
+
 Done:
     Exit Sub
-    
-msg:
-    MsgBox "Make some error handling yo"
 
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Make_a_New_ws_for_a_Calendar_Report"
 End Sub
 
 
 Private Sub Add_Formulas_and_Data_to_Calendar_Report(ws As Worksheet)
+On Error GoTo error_handle
 
     Dim rg As Range
     Set rg = ws.Range(CALENDAR_YEAR_ADDRESS)
@@ -110,10 +102,16 @@ Private Sub Add_Formulas_and_Data_to_Calendar_Report(ws As Worksheet)
     
     Call Make_January(ws:=ws)
     Call Make_February_to_December(ws:=ws)
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Add_Formulas_and_Data_to_Calendar_Report"
 End Sub
 
 Private Sub Add_Buttons_to_Calendar_Report(ws As Worksheet)
+On Error GoTo error_handle
 
     Dim rg As Range
     Set rg = ws.Range("K3:L3")
@@ -170,11 +168,17 @@ Private Sub Add_Buttons_to_Calendar_Report(ws As Worksheet)
         .OnAction = "Print_Calendar_to_Word_Click"
         .DrawingObject.Font.Size = 10
     End With
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Add_Buttons_to_Calendar_Report"
 End Sub
 
 Private Sub Make_January(ws As Worksheet)
-    
+On Error GoTo error_handle
+
     Dim arr_Start_of_Months As Variant
     arr_Start_of_Months = Split(CALENDAR_START_OF_MONTHS, ",")
     
@@ -274,11 +278,17 @@ Private Sub Make_January(ws As Worksheet)
         .Locked = True
         .FormulaHidden = True
     End With
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Make_January"
 End Sub
 
 Private Sub Make_February_to_December(ws As Worksheet)
-    
+On Error GoTo error_handle
+
     Dim arr_Start_of_Months As Variant
     arr_Start_of_Months = Split(CALENDAR_START_OF_MONTHS, ",")
     
@@ -378,11 +388,17 @@ Private Sub Make_February_to_December(ws As Worksheet)
         
         month_number = month_number + 1
     Next counter_month
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Make_February_to_December"
 End Sub
 
 Private Sub Add_Border_Around_Whole_Calendar(ws As Worksheet)
-    
+On Error GoTo error_handle
+
     Dim rg As Range
     Set rg = ws.Range(CALENDAR_WHOLE_AREA)
     
@@ -415,10 +431,16 @@ Private Sub Add_Border_Around_Whole_Calendar(ws As Worksheet)
         End With
         
     End With
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Add_Border_Around_Whole_Calendar"
 End Sub
 
 Private Function Get_January_Formulas() As String()
+On Error GoTo error_handle
 
     Dim arr(1 To 6, 1 To 7) As String
     
@@ -467,9 +489,15 @@ Private Function Get_January_Formulas() As String()
     
     Get_January_Formulas = arr
 
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Function: Get_January_Formulas"
 End Function
 
 Private Function Get_Month_Formulas_sans_Jan()
+On Error GoTo error_handle
 
     Dim arr(1 To 6, 1 To 7) As String
     
@@ -517,9 +545,15 @@ Private Function Get_Month_Formulas_sans_Jan()
     arr(6, 7) = "=IF(RC[-1]="""","""",IF(MONTH(RC[-1]+1)<>MONTH(RC[-1]),"""",RC[-1]+1))"
 
     Get_Month_Formulas_sans_Jan = arr
-    
+
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Function: Get_Month_Formulas_sans_Jan"
 End Function
 Private Sub Write_Gen_Cal_Info()
+On Error GoTo error_handle
 
     Dim arr As Variant
     arr = Get_General_Cal_Info
@@ -562,18 +596,27 @@ Private Sub Write_Gen_Cal_Info()
             .Weight = xlThin
     End With
     
+    '---- MAGIC NUMBERS RULE!!--------
+    '------"Fuck you future Nick" - Nick rn
+    
     rg.Columns(1).EntireColumn.ColumnWidth = 13
     
     rg.Columns(2).EntireColumn.ColumnWidth = 8
         
     rg.Columns(4).EntireColumn.ColumnWidth = 8
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Write_Gen_Cal_Info"
 End Sub
 
 '--------------------------------------------------------------------------------------------
 
 Public Sub Parse_Cal_Dates(Optional idee As String)
-    
+On Error GoTo error_handle
+
     Unprotect_Calendar_Report_ws
     
     Dim ws As Worksheet
@@ -606,10 +649,17 @@ Public Sub Parse_Cal_Dates(Optional idee As String)
     If Not IsEmpty(dict) Then Call Add_nWD_Conditional_Formats(dict, ws)
     
     Protect_Calendar_Report_ws
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    Protect_Calendar_Report_ws
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Parse_Cal_Dates"
 End Sub
 
 Private Sub Add_Exception_Conditional_Formats()
+On Error GoTo error_handle
 
     Call Clear_Legend_of_Exception_Types
 
@@ -674,11 +724,16 @@ Private Sub Add_Exception_Conditional_Formats()
         End With
         
     End If
-    
+
 Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Add_Exception_Conditional_Formats"
 End Sub
 
 Private Sub Clear_Legend_of_Exception_Types()
+On Error GoTo error_handle
 
     Dim ws As Worksheet
     Set ws = ThisWorkbook.Worksheets(CAL_WS_NAME)
@@ -698,10 +753,16 @@ Private Sub Clear_Legend_of_Exception_Types()
     
     rg.Clear
     rg.Offset(, 1).Clear
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Clear_Legend_of_Exception_Types"
 End Sub
 
 Private Sub Add_Exceptions_to_Legend(ws As Worksheet)
+On Error GoTo error_handle
 
     Dim rg As Range
     Set rg = ws.Range(LEGEND_Exc_DEST)
@@ -726,8 +787,14 @@ Private Sub Add_Exceptions_to_Legend(ws As Worksheet)
         .Borders(xlEdgeRight).Weight = xlThin
     End With
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Add_Exceptions_to_Legend"
 End Sub
 Private Sub Add_Inherits_to_Legend(ws As Worksheet, o As Byte)
+On Error GoTo error_handle
 
     Dim rg As Range
     Set rg = ws.Range(LEGEND_Exc_DEST).Offset(, o)
@@ -752,10 +819,16 @@ Private Sub Add_Inherits_to_Legend(ws As Worksheet, o As Byte)
         .Borders(xlEdgeRight).Weight = xlThin
     End With
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Add_Inherits_to_Legend"
 End Sub
 
 Private Sub Add_Hr_Exc_to_Legend(ws As Worksheet, o As Byte)
-    
+On Error GoTo error_handle
+
     Dim rg As Range
     
     If o <> 0 Then
@@ -783,12 +856,18 @@ Private Sub Add_Hr_Exc_to_Legend(ws As Worksheet, o As Byte)
         .Borders(xlEdgeBottom).Weight = xlThin
         .Borders(xlEdgeRight).Weight = xlThin
     End With
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Add_Hr_Exc_to_Legend"
 End Sub
 
 Private Sub Add_nWD_Conditional_Formats(non_Workdays As Object, Cal_Rept_Worksheet As Worksheet)
-    
+On Error GoTo error_handle
+
     Const CALENDAR_WHOLE_AREA As String = "B3:Z39"
-    
     Const CAL_WEEKDAYS_FIRST_ROW As Byte = 5
     Const CAL_WEEKDAYS_FIRST_COL As String = "C"
     
@@ -817,11 +896,15 @@ Private Sub Add_nWD_Conditional_Formats(non_Workdays As Object, Cal_Rept_Workshe
         
     Next key
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Add_nWD_Conditional_Formats"
 End Sub
 
-
-
 Private Function Get_Cal_Data_for_Date_Parsing(Optional idee As String) As Variant
+On Error GoTo error_handle
 
     Dim arr As Variant
     arr = Get_Raw_Data
@@ -900,11 +983,17 @@ SET_FUNC_TO_FINAL:
 Done:
 
     Get_Cal_Data_for_Date_Parsing = out
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Get_Cal_Data_for_Date_Parsing"
 End Function
 
 Private Sub Add_Format_y_Refs_to_Cal_Rept_for_Cal_Selected(idee As Variant)
-    
+On Error GoTo error_handle
+
     Const id_col As Byte = 2
     Const name_col As Byte = 3
     Const name_dest As String = "D40"
@@ -948,11 +1037,17 @@ Private Sub Add_Format_y_Refs_to_Cal_Rept_for_Cal_Selected(idee As Variant)
             GoTo Done
         End If
     Next i
+
 Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Add_Format_y_Refs_to_Cal_Rept_for_Cal_Selected"
 End Sub
 
 Private Function Get_Col_Num(s As String) As Byte
-    
+On Error GoTo error_handle
+
     Dim arr As Variant
     arr = Get_Raw_Data
     
@@ -964,9 +1059,15 @@ Private Function Get_Col_Num(s As String) As Byte
         End If
     Next i
 
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Function: Get_Col_Num"
 End Function
 
 Private Function Get_Calendar_Worksheet() As Worksheet
+On Error GoTo error_handle
 
     Dim chk As Boolean
     chk = Evaluate("ISREF('" & "CALENDAR" & "'!A1)")
@@ -976,11 +1077,17 @@ Private Function Get_Calendar_Worksheet() As Worksheet
     Else
         End
     End If
-    
+
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Function: Get_Calendar_Worksheet"
 End Function
 
 Private Function Get_Raw_Data() As Variant
-    
+On Error GoTo error_handle
+
     Dim ws As Worksheet
     Set ws = Get_Calendar_Worksheet
     
@@ -990,20 +1097,32 @@ Private Function Get_Raw_Data() As Variant
     Set rg = Get_Calendar_Range
     
     Get_Raw_Data = rg.Value2
-    
+
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Function: Get_Raw_Data"
 End Function
 
 Private Function Get_Calendar_Range() As Range
+On Error GoTo error_handle
 
     Dim ws As Worksheet
     Set ws = Get_Calendar_Worksheet
 
     Set Get_Calendar_Range = ws.Range("A1").CurrentRegion
     Set Get_Calendar_Range = Get_Calendar_Range.Offset(1).Resize(Get_Calendar_Range.Rows.Count - 1)
-    
+
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Function: Get_Calendar_Range"
 End Function
 
 Public Function Get_General_Cal_Info() As Variant
+On Error GoTo error_handle
 
     Dim clndr_id As Byte
     clndr_id = Get_Col_Num("clndr_id")
@@ -1058,10 +1177,16 @@ Public Function Get_General_Cal_Info() As Variant
     Next i
 
     Get_General_Cal_Info = out_array
-    
+
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Function: Get_General_Cal_Info"
 End Function
 
 Private Sub Make_Std_Workweek_Grid()
+On Error GoTo error_handle
 
     Dim rg As Range
     Set rg = ThisWorkbook.Worksheets(CAL_WS_NAME).Range(CALENDAR_STD_WORKWEEK_ADDRESS)
@@ -1155,7 +1280,6 @@ Private Sub Make_Std_Workweek_Grid()
     Set rg_times = rg_times.Resize(23, 1).Offset(1)
     rg_times.FormulaR1C1 = "=R[-1]C + 1/24"
 
-
     Dim nums As Variant
     nums = Array(1, 2, 5, 8, 11, 14, 17, 20)
     
@@ -1191,5 +1315,10 @@ Private Sub Make_Std_Workweek_Grid()
         .TintAndShade = 0
         .Weight = xlThick
     End With
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Make_Std_Workweek_Grid"
 End Sub

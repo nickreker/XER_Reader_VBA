@@ -24,8 +24,9 @@ Private Const XER_ADDED_WSs_HEADERS_ROW As Byte = 2
 Private Const XER_ADDED_WSs_START_DATA_ROW As Byte = 3
 
 Public Sub Get_y_Read_XER()
+On Error GoTo error_handle
 
-Dim xer_file_path As String
+    Dim xer_file_path As String
     xer_file_path = Pick_Xer_File
     
     Call Add_XER_File_To_Dashboard(file_path:=xer_file_path)
@@ -46,9 +47,15 @@ Dim xer_file_path As String
     shData.Activate
     shData.Range("A1").Activate
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Split_XER" & Chr(10) & "Procedure: Get_y_Read_XER"
 End Sub
 
 Private Sub Put_Projects_List_On_Dashboard(list_o_projects As Variant)
+On Error GoTo error_handle
 
     Dim rg_title As Range
     Set rg_title = shData.Range(PROJECT_LIST_TABLE_TITLE_RANGE)
@@ -76,12 +83,18 @@ Private Sub Put_Projects_List_On_Dashboard(list_o_projects As Variant)
     Set rg_projects = rg_title.Offset(1).Resize(UBound(list_o_projects, 1))
 
     rg_projects.Value2 = list_o_projects
+    
+Done:
+    Exit Sub
 
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Split_XER" & Chr(10) & "Procedure: Put_Projects_List_On_Dashboard"
 End Sub
 
 Private Function Get_List_of_Projects() As Variant
+On Error GoTo error_handle
 
-Dim rg As Range
+    Dim rg As Range
     Set rg = ThisWorkbook.Worksheets("PROJWBS").Range("A1").CurrentRegion
     Set rg = rg.Offset(1)
     
@@ -131,13 +144,18 @@ Dim rg As Range
         End If
     Next i
 
-
     Get_List_of_Projects = arr_projects
 
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Split_XER" & Chr(10) & "Function: Get_List_of_Projects"
 End Function
 
 Private Function Read_Whole_XER_File(strFile As String) As Variant
-    
+On Error GoTo error_handle
+
     Open strFile For Binary Access Read As #1 'or #FreeFile
     
     Dim MyData As String
@@ -153,10 +171,16 @@ Private Function Read_Whole_XER_File(strFile As String) As Variant
     Call QuickSort_An_Array(arr:=arr, first:=1, last:=UBound(arr))
     
     Read_Whole_XER_File = arr
-    
+
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Split_XER" & Chr(10) & "Function: Read_Whole_XER_File"
 End Function
 
 Private Function Get_XER_Tables(xer_array As Variant) As Collection
+On Error GoTo error_handle
 
     Dim coll_Table_names As Collection
     Set coll_Table_names = New Collection
@@ -169,13 +193,17 @@ Private Function Get_XER_Tables(xer_array As Variant) As Collection
     Call QuickSort_A_Collection(coll_Table_names, 1, coll_Table_names.Count)
         
     Set Get_XER_Tables = coll_Table_names
-        
+
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Split_XER" & Chr(10) & "Function: Get_XER_Tables"
 End Function
 
-
-
 Private Sub Add_XER_File_To_Dashboard(file_path As String)
-    
+On Error GoTo error_handle
+
     Dim rg As Range
     Set rg = shData.Range(FILE_TITLE_RANGE_ON_DASHBOARD)
     rg.Value2 = FILE_TITLE_ON_DASHBOARD
@@ -192,10 +220,16 @@ Private Sub Add_XER_File_To_Dashboard(file_path As String)
                         Anchor:=rg, _
                         Address:=file_path, _
                         ScreenTip:="click to Go to the source file"
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Split_XER" & Chr(10) & "Procedure: Add_XER_File_To_Dashboard"
 End Sub
 
 Private Function Pick_Xer_File() As String
+On Error GoTo error_handle
 
     Dim fd As FileDialog
     
@@ -213,10 +247,16 @@ Private Function Pick_Xer_File() As String
     
     Pick_Xer_File = fd.SelectedItems.Item(1)
 
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Split_XER" & Chr(10) & "Function: Pick_Xer_File"
 End Function
 
 Private Sub Dump_XER_Into_Worksheets(xer_arr As Variant, xer_table_coll As Collection)
-    
+On Error GoTo error_handle
+
     Dim wb As Workbook
     Set wb = ThisWorkbook
 
@@ -254,6 +294,7 @@ Alternate_Transpose:
             
 Resume_Looper:
 '--------------------------------------------------------------------------------------
+On Error GoTo error_handle
 
         rg.TextToColumns Tab:=True
         
@@ -270,10 +311,16 @@ Resume_Looper:
     shData.Activate
     shData.Range("A1").Activate
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Split_XER" & Chr(10) & "Procedure: Dump_XER_Into_Worksheets"
 End Sub
 
 Private Sub Add_Tables_to_Dashboard(total_items As Long, table_name As String)
-    
+On Error GoTo error_handle
+
     Dim rg As Range
     Set rg = shData.Range(TABLES_TITLE_RANGE_ON_DASHBOARD)
     
@@ -324,10 +371,16 @@ Private Sub Add_Tables_to_Dashboard(total_items As Long, table_name As String)
         
     End If
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Split_XER" & Chr(10) & "Procedure: Add_Tables_to_Dashboard"
 End Sub
 
 Private Sub QuickSort_A_Collection(coll As Collection, first As Long, last As Long)
-  
+On Error GoTo error_handle
+
   Dim vCentreVal As Variant, vTemp As Variant
   
   Dim lTempLow As Long
@@ -367,11 +420,17 @@ Private Sub QuickSort_A_Collection(coll As Collection, first As Long, last As Lo
   
   If first < lTempHi Then QuickSort_A_Collection coll, first, lTempHi
   If lTempLow < last Then QuickSort_A_Collection coll, lTempLow, last
-  
+ 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Split_XER" & Chr(10) & "Procedure: QuickSort_A_Collection"
 End Sub
 
 Private Sub QuickSort_An_Array(arr As Variant, first As Long, last As Long)
-  
+On Error GoTo error_handle
+
   Dim vCentreVal As Variant, vTemp As Variant
   
   Dim lTempLow As Long
@@ -408,5 +467,10 @@ Private Sub QuickSort_An_Array(arr As Variant, first As Long, last As Long)
   
   If first < lTempHi Then QuickSort_An_Array arr, first, lTempHi
   If lTempLow < last Then QuickSort_An_Array arr, lTempLow, last
-  
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Split_XER" & Chr(10) & "Procedure: QuickSort_An_Array"
 End Sub
