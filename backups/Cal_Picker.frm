@@ -15,10 +15,20 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub btnCancel_Click()
+On Error GoTo error_handle
+
     Unload Me
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Form: Cal_Picker" & Chr(10) & "Procedure: btnCancel_Click"
 End Sub
 
 Private Sub btnSelect_Click()
+On Error GoTo error_handle
+
     Dim s As String
     s = Me.listboxCals.BoundValue
     
@@ -28,17 +38,24 @@ Private Sub btnSelect_Click()
     o.Parse_Cal_Dates (s)
     
     Unload Me
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Form: Cal_Picker" & Chr(10) & "Procedure: btnSelect_Click"
 End Sub
 
 Private Sub UserForm_Initialize()
-    
+
     ' Fill the listbox
    Call AddDataToListbox
    
 End Sub
 
 Private Sub AddDataToListbox()
-    
+On Error GoTo error_handle
+
     Call Unprotect_Calendar_Report_ws
     
     ' Get the data range
@@ -56,10 +73,16 @@ Private Sub AddDataToListbox()
     
     Call Protect_Calendar_Report_ws
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Form: Cal_Picker" & Chr(10) & "Procedure: AddDataToListbox"
 End Sub
 
 Private Function GetRange() As Range
-    
+On Error GoTo error_handle
+
     Dim chk As Boolean
     chk = Evaluate("ISREF('" & CAL_WS_NAME & "'!A1)")
     
@@ -76,5 +99,10 @@ Private Function GetRange() As Range
     Set rg = rg.Resize(rg.Rows.Count - 1)
     
     If Not IsEmpty(rg) Then Set GetRange = rg
-    
+
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Form: Cal_Picker" & Chr(10) & "Function: GetRange"
 End Function

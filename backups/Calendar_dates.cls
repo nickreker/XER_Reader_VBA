@@ -14,29 +14,47 @@ Private m_nWD As Object
 
 Private Const LEGEND_nWD_DEST As String = "B42"
 Private Const LEGEND_nWD_COLOUR As Long = 11184295 'Flatiron Light Gray
-
 Private Const WH_GRID_COLOUR As Long = 7482624 'Flatiron Dark Blue
 
 Private Sub Class_Initialize()
+On Error GoTo error_handle
 
     Set m_nWD = CreateObject("Scripting.Dictionary")
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Procedure: Class_Initialize"
 End Sub
 
 Public Property Get Non_Work_Days() As Object
+On Error GoTo error_handle
 
     Set Non_Work_Days = m_nWD
 
+Done:
+    Exit Property
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Property: Non_Work_Days"
 End Property
 
 Private Sub Class_Terminate()
-    
+On Error GoTo error_handle
+
     m_nWD.RemoveAll
     Set m_nWD = Nothing
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Procedure: Class_Terminate"
 End Sub
 
 Public Sub Parse_Common_Info()
+On Error GoTo error_handle
    
     Dim arr_temp1 As Variant
     arr_temp1 = Split(raw_data(2), "DaysOfWeek") '2 is cal_data from the idee selected
@@ -70,9 +88,15 @@ Public Sub Parse_Common_Info()
         Call Get_y_Show_Global_Inherits
     End If
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Procedure: Parse_Common_Info"
 End Sub
 
 Private Sub Get_y_Show_Global_Inherits()
+On Error GoTo error_handle
 
     Dim arr_temp1 As Variant
     arr_temp1 = Split(raw_data(4), "Exceptions")
@@ -110,10 +134,17 @@ Private Sub Get_y_Show_Global_Inherits()
     Next i
     
     Call Add_Comment_for_Global_Inheritee
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Procedure: Get_y_Show_Global_Inherits"
 End Sub
 
 Public Sub Add_Comment_for_Global_Inheritee()
-            
+On Error GoTo error_handle
+      
     Dim ws As Worksheet
     Set ws = ThisWorkbook.Worksheets(CAL_WS_NAME)
     
@@ -130,10 +161,16 @@ Public Sub Add_Comment_for_Global_Inheritee()
             cel.Offset(, 1).AddComment "Bequeather"
         End If
     Next cel
-    
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Procedure: Add_Comment_for_Global_Inheritee"
 End Sub
 
 Private Function Get_Dict_Exceptions_All() As Object
+On Error GoTo error_handle
     
     Dim ws As Worksheet
     Set ws = ThisWorkbook.Worksheets(CAL_WS_NAME)
@@ -154,10 +191,16 @@ Private Function Get_Dict_Exceptions_All() As Object
     Next cel
     
     Set Get_Dict_Exceptions_All = dict
-    
+
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Function: Get_Dict_Exceptions_All"
 End Function
 
 Private Sub Write_Exceptions_To_Cal_Report(arr As Variant)
+On Error GoTo error_handle
     
     Dim ws As Worksheet
     Set ws = ThisWorkbook.Worksheets(CAL_WS_NAME)
@@ -271,12 +314,16 @@ Write_Hours:
         End With
         
     End If
-    
-Done:
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Procedure: Write_Exceptions_To_Cal_Report"
 End Sub
 
 Private Function Get_Exceptions_Array(e_array As Variant) As Variant
+On Error GoTo error_handle
 
     Dim i As Long 'counter for array passed in
     
@@ -321,9 +368,15 @@ Continue:
     
     Get_Exceptions_Array = arr
 
+Done:
+    Exit Function
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Function: Get_Exceptions_Array"
 End Function
 
 Private Sub Parse_Standard_Work_Week(m_Raw_Data As Variant)
+On Error GoTo error_handle
 
     ReDim Standard_Week(1 To 7, 1 To 5)
 
@@ -419,9 +472,15 @@ Continue:
     Call Format_Standard_Workweek(Standard_Week)
     Call Add_Legend_Workday_Stuff(Standard_Week)
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Procedure: Parse_Standard_Work_Week"
 End Sub
 
 Private Sub Add_Legend_Workday_Stuff(arr As Variant)
+On Error GoTo error_handle
 
     Dim ws As Worksheet
     Set ws = ThisWorkbook.Worksheets(CAL_WS_NAME)
@@ -449,9 +508,15 @@ Private Sub Add_Legend_Workday_Stuff(arr As Variant)
         .Borders(xlEdgeRight).Weight = xlThin
     End With
 
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Procedure: Add_Legend_Workday_Stuff"
 End Sub
 
 Private Sub Format_Standard_Workweek(arr As Variant)
+On Error GoTo error_handle
     
     Const magic_num As Byte = 3
     Const sunday_address As String = "E48:F71"
@@ -507,11 +572,17 @@ Next_Day:
 
         Set rg = rg.Offset(, magic_num)
     Next i
-        
+
+Done:
+    Exit Sub
+
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Procedure: Format_Standard_Workweek"
 End Sub
 
 
 Private Function Prolly_A_Workday(ByVal s As String) As Boolean
+On Error GoTo error_handle
 
     Dim p As Boolean
     p = False
@@ -521,19 +592,26 @@ Private Function Prolly_A_Workday(ByVal s As String) As Boolean
 
 Done:
     Prolly_A_Workday = p
+    Exit Function
 
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Function: Prolly_A_Workday"
 End Function
 
 Private Function Is_Hours(ByVal s As String) As Boolean
+On Error GoTo error_handle
 
-        Dim h As Boolean
-        h = False
-        If s = "" Then GoTo Done
-        h = (IsNumeric(Split(s, "(")(0))) And (InStr(s, "s|") <> 0) And s <> ""
+    Dim h As Boolean
+    h = False
+    If s = "" Then GoTo Done
+    h = (IsNumeric(Split(s, "(")(0))) And (InStr(s, "s|") <> 0) And s <> ""
 
 Done:
-        Is_Hours = h
+    Is_Hours = h
+    Exit Function
 
+error_handle:
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_dates" & Chr(10) & "Function: Is_Hours"
 End Function
 
 

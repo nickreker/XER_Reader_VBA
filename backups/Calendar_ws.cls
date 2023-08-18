@@ -981,14 +981,11 @@ SET_FUNC_TO_FINAL:
     End If
 
 Done:
-
     Get_Cal_Data_for_Date_Parsing = out
-
-Done:
-    Exit Sub
+    Exit Function
 
 error_handle:
-    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Procedure: Get_Cal_Data_for_Date_Parsing"
+    MsgBox Err.Description & Chr(10) & Chr(10) & "Class Module: Calendar_ws" & Chr(10) & "Function: Get_Cal_Data_for_Date_Parsing"
 End Function
 
 Private Sub Add_Format_y_Refs_to_Cal_Rept_for_Cal_Selected(idee As Variant)
