@@ -678,7 +678,7 @@ On Error GoTo error_handle
     Call Add_Exceptions_to_Legend(ws)
     
     Dim formula_string As String
-    formula_string = "=AND(ISNUMBER(MATCH(C6," & rg_exc.Columns(1).Address & ",0)),C5<>"""")"
+    formula_string = "=AND(ISNUMBER(MATCH(C6," & rg_exc.Columns(1).Address & ",0)),C6<>"""")"
     
     With rg_m
         .FormatConditions.Add Type:=xlExpression, Formula1:=formula_string

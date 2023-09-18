@@ -329,7 +329,7 @@ On Error GoTo error_handle
 
         Next y
         
-        .Selection.Goto What:=1, Which:=1
+        .Selection.GoTo What:=1, Which:=1
     End With
     
     Dim year_now As Integer
